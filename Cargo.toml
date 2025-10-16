@@ -1,0 +1,21 @@
+[package]
+name = "ga"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = { version = "4.5", features = ["derive"] }
+dialoguer = "0.11"
+colored = "2.1"
+
+[profile.release]
+opt-level = "z"
+lto = "fat"
+codegen-units = 1
+strip = "symbols"
+panic = "abort"
+incremental = false
+overflow-checks = false
+
+[package.metadata.cargo-bloat]
+default-features = false
