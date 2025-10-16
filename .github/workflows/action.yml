@@ -1,0 +1,46 @@
+---
+name: Release Binary
+
+on:
+  push:
+    tags:
+      - "v*"   # Trigger only on version tags like v1.0.0
+
+permissions:
+  contents: write   # Required to create and upload release assets
+  actions: read
+  checks: read
+
+jobs:
+  build-release:
+    name: Build & Publish Linux Binary
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+
+      - name: Build release binary (x86_64)
+        run: |
+          cargo build --release --target x86_64-unknown-linux-gnu
+          mkdir -p dist
+          cp target/x86_64-unknown-linux-gnu/release/ga dist/ga
+
+      - name: Generate SHA256 checksum
+        run: |
+          cd dist
+          sha256sum ga > ga.sha256
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/ga
+            dist/ga.sha256
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
