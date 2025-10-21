@@ -2,6 +2,12 @@
 name = "ga"
 version = "0.1.0"
 edition = "2024"
+authors = ["Kunal Singh Dadhwal <kunalsinghdadhwal@gmail.com>"]
+license = "MIT"
+description = "Git Automation CLI Tool"
+repository = "https://github.com/kunalsinghdadhwal/ga-cli"
+readme = "README.md"
+keywords = ["Git", "Clap", "Git Automation"]
 
 [dependencies]
 clap = { version = "4.5", features = ["derive"] }
